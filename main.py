@@ -8,11 +8,11 @@ from utils.lib import extract_text_from_html, is_valid_command
 
 app = FastAPI()
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+	CORSMiddleware,
+	allow_origins=["*"],
+	allow_credentials=True,
+	allow_methods=["*"],
+	allow_headers=["*"],
 )
 
 
@@ -20,7 +20,6 @@ app.add_middleware(
 async def incoming_request(request: Request, background_tasks: BackgroundTasks):
 	res = await request.json()
 	actual_text = extract_text_from_html(res.get('message'))
-	# print(actual_text)
 	settings_list = res.get('settings', [])
 	if not is_valid_command(actual_text):
 		return  {
@@ -29,15 +28,14 @@ async def incoming_request(request: Request, background_tasks: BackgroundTasks):
 			"status": "success",
 			"username": "Levels"
 		}
-	
-	defaults = {"agent": "levels-default-agent", "api_key": "", "channel_id": ""}
+	defaults = {"agent": "", "api_key": "", "channel_id": ""}
 	values = {
-			key: next((item.get("default", default)
-				for item in settings_list if item.get("label") == key), default)
-			for key, default in defaults.items()
+		key: next((item.get("default", default)
+			for item in settings_list if item.get("label") == key), default)
+		for key, default in defaults.items()
 	}
 	agent, api_key, channel_id = values["agent"], values["api_key"], values["channel_id"]
-	
+ 
 	background_tasks.add_task(process_analysis, agent, api_key, actual_text, channel_id)
 	
 	cleaned_text = actual_text
@@ -47,10 +45,10 @@ async def incoming_request(request: Request, background_tasks: BackgroundTasks):
 		cleaned_text = actual_text[7:]
 
 	data = {
-			"event_name": "Levels_processing",
-			"message": f'{cleaned_text} <strong style="color: green">-- Received (app: Levels-im)</strong>',
-			"status": "success",
-			"username": "Levels"
+		"event_name": "Levels_processing",
+		"message": f'{cleaned_text} <strong style="color: green">-- Received (app: Levels-im)</strong>',
+		"status": "success",
+		"username": "Levels"
 	}
 	return data
 
