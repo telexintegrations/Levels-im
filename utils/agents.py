@@ -10,13 +10,16 @@ class Agents:
 
   def gemini(self, agent_role: str, prompt: str, model_llm: str) -> str:
     client = genai.Client(api_key=self.api_key)
-    response = client.models.generate_content(
-      model=model_llm,
-      config=types.GenerateContentConfig(
-        system_instruction=agent_role),
-      contents=[prompt]
-    )
-    return response.text
+    try:
+      response = client.models.generate_content(
+        model=model_llm,
+        config=types.GenerateContentConfig(
+          system_instruction=agent_role),
+        contents=[prompt]
+      )
+      return response.text
+    except Exception as e:
+      return f"Error processing request: {str(e)}"
 
   def openai(self, agent_role: str, prompt: str, model_llm: str) -> str:
     client = OpenAI(api_key=self.api_key)

@@ -49,6 +49,6 @@ intergrations = {
     },
   ],
     "target_url": "https://levels-im.vercel.app/incoming-request",
-    "website": "https://levels-im.vercel.app/"
+    "website": "https://levels-im.vercel.app"
   }
 }

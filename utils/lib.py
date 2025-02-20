@@ -138,7 +138,7 @@ def process_analysis(agent: str, api_key: str, msg: str, channel_id: str):
       }
       try:
         with httpx.Client() as client:
-            res = client.post(webhook_url, json=payload)
+            res = client.post(webhook_url, json=payload, timeout=30)
             
             # if res.status_code == 200:
             #     print(res) 
