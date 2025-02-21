@@ -3,7 +3,7 @@ from typing import Optional
 
 class Settings(BaseSettings):
   # API settings
-  REDIS_URL: str
+  REDIS_URL: str = 'redis://localhost:6379/0'
   REDIS_URL_BE: str | None = None
   
   class Config:
