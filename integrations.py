@@ -48,7 +48,7 @@ intergrations = {
       "required": True
     },
   ],
-    "target_url": "https://levels-im.vercel.app/incoming-request",
-    "website": "https://levels-im.vercel.app"
+    "target_url": "https://02b7-102-89-34-131.ngrok-free.app/incoming-request",
+    "website": "https://02b7-102-89-34-131.ngrok-free.app"
   }
 }

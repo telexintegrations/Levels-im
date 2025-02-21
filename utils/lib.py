@@ -143,6 +143,14 @@ def process_analysis(agent: str, api_key: str, msg: str, channel_id: str):
             # if res.status_code == 200:
             #     print(res) 
       except Exception as e:
+        with httpx.Client() as client:
+          payload = {
+            "event_name": "Levels-im",
+            "message": e,
+            "status": "error",
+            "username": "Levels"
+          }
+          client.post(webhook_url, json=payload, timeout=30)
         return f"{webhook_url} check failed: {str(e)}"
   except Exception as e:
       response = f"Error processing request: {str(e)}"
