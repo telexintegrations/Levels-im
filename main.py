@@ -2,7 +2,7 @@ from fastapi import BackgroundTasks, FastAPI, Request, HTTPException
 from integrations import intergrations
 from fastapi.middleware.cors import CORSMiddleware
 
-from utils.celery import process_analysis
+from utils.lib import process_analysis
 from utils.lib import extract_text_from_html, is_valid_command
 
 

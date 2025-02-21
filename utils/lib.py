@@ -1,7 +1,7 @@
 
 from bs4 import BeautifulSoup
 import httpx
-from utils.agents import run_agent
+from utils.agents import run_agent, send_webhook
 
 from enum import Enum
 
@@ -124,12 +124,30 @@ def map_command_initial_prompt(text: str) -> str | None:
 
   return None
 
+
+
 def process_analysis(agent: str, api_key: str, msg: str, channel_id: str):
-  agent_role = map_command_initial_prompt(msg)
   webhook_url = f"https://ping.telex.im/v1/webhooks/{channel_id}"
+  if api_key == "":
+    data = {
+      "event_name": "Levels_processing",
+      "message": f'<strong style="color: red"> Api key hasnt been added in settings! </strong>',
+      "status": "error",
+      "username": "Levels"
+    }
+    send_webhook(webhook_url, data)
+  if agent == "" or channel_id == "":
+    data = {
+      "event_name": "Levels_processing",
+      "message": f'<strong style="color: red">Some required settings vairable havent been configured yet! Required settings: channel_id, and agent </strong>',
+      "status": "error",
+      "username": "Levels"
+    }
+    send_webhook(webhook_url, data)
+  agent_role = map_command_initial_prompt(msg)
   model_llm = AgentModel[agent].value
   try:
-      response = run_agent(agent, api_key, agent_role, msg, model_llm)
+      response = run_agent(agent, api_key, agent_role, msg, model_llm, channel_id=channel_id)
       payload = {
         "event_name": "Levels-im",
         "message": response.replace("```html", "").replace("```", ""),
@@ -137,21 +155,16 @@ def process_analysis(agent: str, api_key: str, msg: str, channel_id: str):
         "username": "Levels"
       }
       try:
-        with httpx.Client() as client:
-          res = client.post(webhook_url, json=payload, timeout=30)
-            
-            # if res.status_code == 200:
-            #     print(res) 
+        send_webhook(webhook_url, payload)
       except Exception as e:
-        with httpx.Client() as client:
-          payload = {
-            "event_name": "Levels-im",
-            "message": e,
-            "status": "error",
-            "username": "Levels"
-          }
-          client.post(webhook_url, json=payload, timeout=30)
-        return f"{webhook_url} check failed: {str(e)}"
+        payload = {
+          "event_name": "Levels-im",
+          "message": e,
+          "status": "error",
+          "username": "Levels"
+        }
+        send_webhook(webhook_url, payload)
+          
   except Exception as e:
       response = f"Error processing request: {str(e)}"
   return f'Task completed. Channel ID: {channel_id}'
