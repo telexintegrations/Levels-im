@@ -22,8 +22,19 @@ celery_app.conf.broker_connection_retry_on_startup = True
 # task
 @celery_app.task
 def process_analysis(agent: str, api_key: str, msg: str, channel_id: str):
-  agent_role = map_command_initial_prompt(msg)
   webhook_url = f"https://ping.telex.im/v1/webhooks/{channel_id}"
+  if api_key == "":
+    data = {
+		"event_name": "Levels_processing",
+		"message": f'<strong style="color: red"> Api key hasnt been added in settings! </strong>',
+		"status": "error",
+		"username": "Levels"
+	}
+  with httpx.Client() as client:
+    res = client.post(webhook_url, json=data)
+    return ''
+  agent_role = map_command_initial_prompt(msg)
+  
   model_llm = AgentModel[agent].value
   try:
       response = run_agent(agent, api_key, agent_role, msg, model_llm)
