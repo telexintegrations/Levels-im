@@ -138,7 +138,7 @@ def process_analysis(agent: str, api_key: str, msg: str, channel_id: str):
       }
       try:
         with httpx.Client() as client:
-            res = client.post(webhook_url, json=payload, timeout=30)
+          res = client.post(webhook_url, json=payload, timeout=30)
             
             # if res.status_code == 200:
             #     print(res) 
@@ -146,4 +146,4 @@ def process_analysis(agent: str, api_key: str, msg: str, channel_id: str):
         return f"{webhook_url} check failed: {str(e)}"
   except Exception as e:
       response = f"Error processing request: {str(e)}"
-  return f'Taskcompleted. Channel ID: {channel_id}'
+  return f'Task completed. Channel ID: {channel_id}'
