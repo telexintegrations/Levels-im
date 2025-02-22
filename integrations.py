@@ -48,7 +48,7 @@ intergrations = {
       "required": True
     },
   ],
-    "target_url": "ttps://4cad-105-112-22-127.ngrok-free.app/incoming-request",
-    "website": "ttps://4cad-105-112-22-127.ngrok-free.app"
+    "target_url": "https://4cad-105-112-22-127.ngrok-free.app/incoming-request",
+    "website": "https://4cad-105-112-22-127.ngrok-free.app"
   }
 }
