@@ -65,7 +65,7 @@ def levels_command() -> str:
       charts for market share, heatmaps for feature comparisons).
       Data Standards: Use only recent data (last 12–18 months). Cite sources for financials, surveys, or market reports.
       Tone: Authoritative yet concise—avoid fluff. Prioritize insights executives can act on immediately.
-      Length: LESS THAN 2,000 words and 25,000 characters, excluding visuals.
+      Length: LESS THAN 2,000 words and 10,000 characters, excluding visuals.
       NOTE: No tables....DO NOT USE TABLES and return only your analysis result in html wrapped in a single div.
   """
   return base_prompt
@@ -107,7 +107,7 @@ def ratio_command() -> str:
         No Fluff: Use clear headings, bullet points, and 🟢/🔴 icons for quick scanning.
         Data-Driven: Benchmark against industry standards (e.g., ‘Tool E’s latency is 20% below sector average’).
         Bias-Free: No affiliate links or vendor favoritism—prove claims with evidence.
-        Length: LESS THAN 2,000 words and 18,000 characters, excluding visuals.
+        Length: LESS THAN 2,000 words and 10,000 characters, excluding visuals.
     NOTE: No tables....DO NOT USE TABLES and return only your analysis result in html wrapped in a single div.
   """
   return base_prompt
