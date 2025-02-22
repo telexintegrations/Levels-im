@@ -4,7 +4,7 @@ import httpx
 from utils.agents import run_agent, send_webhook
 
 from enum import Enum
-import logging
+
 
 
 class AgentModel(Enum):
@@ -137,7 +137,7 @@ def process_analysis(agent: str, api_key: str, msg: str, channel_id: str):
       "status": "error",
       "username": "Levels"
     }
-    logging.error(f"Api key hasnt been added in settings!")
+    
     send_webhook(webhook_url, data)
     return 
   

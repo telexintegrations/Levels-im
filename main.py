@@ -1,4 +1,3 @@
-import logging
 from fastapi import BackgroundTasks, FastAPI, Request
 from integrations import intergrations
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,12 +13,6 @@ app.add_middleware(
 	allow_credentials=True,
 	allow_methods=["*"],
 	allow_headers=["*"],
-)
-
-logging.basicConfig(
-	filename='agent.log',
-	level=logging.INFO,
-	format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
 
