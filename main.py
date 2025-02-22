@@ -1,9 +1,10 @@
-from fastapi import BackgroundTasks, FastAPI, Request, HTTPException
+import logging
+from fastapi import BackgroundTasks, FastAPI, Request
 from integrations import intergrations
 from fastapi.middleware.cors import CORSMiddleware
 
-from utils.lib import process_analysis
-from utils.lib import extract_text_from_html, is_valid_command
+from utils.lib import extract_text_from_html, is_valid_command, process_analysis
+
 
 
 app = FastAPI()
@@ -15,10 +16,17 @@ app.add_middleware(
 	allow_headers=["*"],
 )
 
+logging.basicConfig(
+	filename='agent.log',
+	level=logging.INFO,
+	format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 
 @app.post('/incoming-request')
 async def incoming_request(request: Request, background_tasks: BackgroundTasks):
 	res = await request.json()
+	print(res)
 	actual_text = extract_text_from_html(res.get('message'))
 	settings_list = res.get('settings', [])
 	if not is_valid_command(actual_text):
@@ -37,7 +45,7 @@ async def incoming_request(request: Request, background_tasks: BackgroundTasks):
 	agent, api_key, channel_id = values["agent"], values["api_key"], values["channel_id"]
  
 	background_tasks.add_task(process_analysis, agent, api_key, actual_text, channel_id)
-	
+ 
 	cleaned_text = actual_text
 	if actual_text.startswith('/levels '):
 		cleaned_text = actual_text[8:]
